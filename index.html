@@ -2,10 +2,76 @@
 <html>
 <head>
     <meta charset="UTF-8">
+    <meta lang="en">
     <title>Skit Sketch</title>
-    <script src="app.js"></script>
-
+    <script src="app.js" defer></script>
+    <style>
+        .row{
+            display: block;
+            line-height: 0;
+        }
+        .col{
+            display: inline-block;
+        }
+        .square{
+            width: 25px;
+            height: 25px;
+            margin: 0;
+            padding: 0;
+            line-height: 0;
+            background-color: lightblue;
+        }
+        .square:hover {
+            background-color: #fff;
+        }
+        .red {
+            background-color: red;
+        }
+        
+    </style>
 </head>
 <body>
+<div>
+    <span>Enter board size</span>
+    
+    <input id="boardinput" type="range" value="16" min="4" max="16" oninput="document.getElementById('boardsize').innerHTML = this.value">
+    <output id="boardsize">16</output>
+    <input id="boardbutton" type="button" value="Create Board">
+</div>
+<div id="sketchboard"></div>
+
+<script>
+    const gameBoard = document.getElementById('sketchboard');
+    const boardButton = document.getElementById('boardbutton');
+    boardButton.addEventListener('click', () => createBoard());
+    
+    
+    function createBoard(){
+        boardButton.style = "display:none";
+        let boardSize = Number(document.getElementById('boardsize').innerHTML);
+        
+        for (let x = 1; x <= boardSize; x++){
+            let newRow = document.createElement("div");
+            gameBoard.appendChild(newRow);
+            newRow.setAttribute('id', ('row' + x));
+            newRow.setAttribute('class',('row'));
+            
+            for (var y = 1; y <= boardSize; y++){
+                let newColumn = document.createElement("div");
+                newRow.appendChild(newColumn);
+                newColumn.setAttribute('id', ('col' + y))
+                newColumn.setAttribute('class',('col ' + 'square'));
+            }
+        }
+        let squares = document.getElementsByClassName('square');
+        let boxes = Array.from(squares);
+        boxes.forEach(box => box.addEventListener('click',() => {
+            box.setAttribute('style', 'background-color:red;')
+        }));
+    }
+    
+
+</script>
+
 </body>
 </html>
