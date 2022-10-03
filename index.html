@@ -19,36 +19,74 @@
             margin: 0;
             padding: 0;
             line-height: 0;
-            background-color: lightblue;
+            background-color:  #eefeff;
+            border: .5px solid  #d5e4e5;
         }
         .square:hover {
             background-color: #fff;
         }
-        .red {
-            background-color: red;
-        }
         
     </style>
 </head>
+
 <body>
-<div>
-    <span>Enter board size</span>
-    
-    <input id="boardinput" type="range" value="16" min="4" max="16" oninput="document.getElementById('boardsize').innerHTML = this.value">
-    <output id="boardsize">16</output>
-    <input id="boardbutton" type="button" value="Create Board">
+<div id="sidebar"> 
+    <div>
+        <span>Board size: </span>
+        <output id="boardsize">16x16</output>
+        <div>
+            <input id="boardinput" type="range" value="16" min="4" max="16" oninput="document.getElementById('boardsize').innerHTML = this.value + 'x' + this.value">
+        </div>
+        <div>
+            <input id="createbutton" type="button" value="Create Board">
+        </div>
+        <div>
+            <input id="deletebutton" type="button" value="New Board" style="display:none;">
+        </div>
+        <br>
+        <div>
+            <span>Color picker: </span>
+            <div>
+                <input id="colorpicker" type="color" value="#6378ff" oninput="document.getElementById('color').innerHTML = this.value">
+                <output id="color">#6378ff</output>
+            </div>
+        </div>
+    </div>
 </div>
 <div id="sketchboard"></div>
 
 <script>
     const gameBoard = document.getElementById('sketchboard');
-    const boardButton = document.getElementById('boardbutton');
-    boardButton.addEventListener('click', () => createBoard());
+    const boardButton = document.getElementById('createbutton');
+    const deleteButton = document.getElementById('deletebutton');
     
+    deleteButton.addEventListener('click', () => newBoard());
+    boardButton.addEventListener('click', () => createBoard());
+
+    let color;
+    
+    function addBoxListener(){
+        let squares = document.getElementsByClassName('square');
+        let boxes = Array.from(squares);
+        boxes.forEach(box => box.addEventListener('mousedown',painter));
+        boxes.forEach(box => box.addEventListener('mouseover',painter));
+    }
+
+    let mouseDown = false
+    document.body.onmousedown = () => (mouseDown = true)
+    document.body.onmouseup = () => (mouseDown = false)
+    
+    function painter(e){
+        if (e.type === 'mouseover' && !mouseDown) return;
+        color = document.getElementById('color').value;
+        e.target.style.backgroundColor = color;
+    }
     
     function createBoard(){
         boardButton.style = "display:none";
-        let boardSize = Number(document.getElementById('boardsize').innerHTML);
+        deleteButton.style = "display:inline";
+        
+        let boardSize = Number(document.getElementById('boardinput').value);
         
         for (let x = 1; x <= boardSize; x++){
             let newRow = document.createElement("div");
@@ -63,11 +101,12 @@
                 newColumn.setAttribute('class',('col ' + 'square'));
             }
         }
-        let squares = document.getElementsByClassName('square');
-        let boxes = Array.from(squares);
-        boxes.forEach(box => box.addEventListener('click',() => {
-            box.setAttribute('style', 'background-color:red;')
-        }));
+        addBoxListener();
+    }
+    
+    function newBoard(){
+        gameBoard.innerHTML = " ";
+        createBoard();
     }
     
 
