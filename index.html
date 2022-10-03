@@ -13,6 +13,15 @@
         .col{
             display: inline-block;
         }
+        #sidebar{
+            display: inline-block;
+            float: left;
+            width: 200px;
+        }
+        #sketchboard{
+            display: inline-block;
+            float: left;
+        }
         .square{
             width: 25px;
             height: 25px;
@@ -30,26 +39,25 @@
 </head>
 
 <body>
-<div id="sidebar"> 
+<h1>Skit Sketch</h1>
+<div id="sidebar">
+    <span>Board size: </span>
+    <output id="boardsize">16x16</output>
     <div>
-        <span>Board size: </span>
-        <output id="boardsize">16x16</output>
+        <input id="boardinput" type="range" value="16" min="4" max="16" oninput="document.getElementById('boardsize').innerHTML = this.value + 'x' + this.value">
+    </div>
+    <div>
+        <input id="createbutton" type="button" value="Create Board">
+    </div>
+    <div>
+        <input id="deletebutton" type="button" value="New Board" style="display:none;">
+    </div>
+    <br>
+    <div>
+        <span>Color picker: </span>
         <div>
-            <input id="boardinput" type="range" value="16" min="4" max="16" oninput="document.getElementById('boardsize').innerHTML = this.value + 'x' + this.value">
-        </div>
-        <div>
-            <input id="createbutton" type="button" value="Create Board">
-        </div>
-        <div>
-            <input id="deletebutton" type="button" value="New Board" style="display:none;">
-        </div>
-        <br>
-        <div>
-            <span>Color picker: </span>
-            <div>
-                <input id="colorpicker" type="color" value="#6378ff" oninput="document.getElementById('color').innerHTML = this.value">
-                <output id="color">#6378ff</output>
-            </div>
+            <input id="colorpicker" type="color" value="#6378ff" oninput="document.getElementById('color').innerHTML = this.value">
+            <output id="color">#6378ff</output>
         </div>
     </div>
 </div>
